@@ -1,0 +1,20 @@
+{
+  "name": "IIN-BIN",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DiyazY/IIN-BIN.git"
+  },
+  "keywords": [],
+  "author": "Diyaz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DiyazY/IIN-BIN/issues"
+  },
+  "homepage": "https://github.com/DiyazY/IIN-BIN"
+}
