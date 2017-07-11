@@ -1,5 +1,7 @@
 import iinbinFunc from './iinbin';
 
 let iinbin = iinbinFunc('qwe');
+console.log('Я тут!')
+export default iinbin;
 
-document.body.appendChild(iinbin());
+document.body.innerHTML=iinbin('lf nen z nen');

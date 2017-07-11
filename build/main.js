@@ -73,6 +73,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 let iinbin = __WEBPACK_IMPORTED_MODULE_0__iinbin__["a" /* default */]('qwe');
+console.log('Я тут!')
+/* harmony default export */ __webpack_exports__["default"] = (iinbin);
 
 document.body.appendChild(iinbin());
 

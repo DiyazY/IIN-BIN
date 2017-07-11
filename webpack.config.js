@@ -7,7 +7,13 @@ const PATHS = {
 }
 
 module.exports = {
+    // entry: PATHS.source +'/index.js',
     entry: PATHS.source +'/index.js',
+    devServer: {
+        contentBase: PATHS.source,
+        inline:true,
+        port: 5000
+    },
     output:{
         path: PATHS.build,
         filename: '[name].js'
@@ -18,3 +24,4 @@ module.exports = {
         })
     ]
 }
+
