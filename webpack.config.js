@@ -7,7 +7,6 @@ const PATHS = {
 }
 
 module.exports = {
-    // entry: PATHS.source +'/index.js',
     entry: PATHS.source +'/index.js',
     devServer: {
         contentBase: PATHS.source,
@@ -20,8 +19,17 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'IIN-BIN App'
+            template: PATHS.source+'/index.pug'
         })
-    ]
+    ],
+    module:{
+        rules:[{
+            test:/\.pug$/,
+            loader:'pug-loader',
+            options:{
+                pretty:true
+            }
+        }]
+    }
 }
 

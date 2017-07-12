@@ -76,7 +76,7 @@ let iinbin = __WEBPACK_IMPORTED_MODULE_0__iinbin__["a" /* default */]('qwe');
 console.log('Я тут!')
 /* harmony default export */ __webpack_exports__["default"] = (iinbin);
 
-document.body.appendChild(iinbin());
+document.body.innerHTML=iinbin('lf nen z nen');
 
 /***/ }),
 /* 1 */
@@ -84,6 +84,7 @@ document.body.appendChild(iinbin());
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = (function(value){
+    this.val = value;
     return function(value){
         console.log(value);
         return (value);
