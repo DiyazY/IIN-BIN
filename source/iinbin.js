@@ -11,6 +11,7 @@ export default class IinBin{
         this._value = null;
         this._type = null;
         this._a7 = null;
+        this._a5 = null;
         this._isEmpty = (val)=>{
             if(val == null || val === undefined || val ===''){
                 return true;
@@ -64,8 +65,8 @@ export default class IinBin{
             }
             this._type =(()=>{
                 let checkiinOrBinArray =[0,1,2,3];
-                let a5 = parseInt(newValue.substring(4, 5));
-                if(checkiinOrBinArray.indexOf(a5)!=-1){
+                this._a5 = parseInt(newValue.substring(4, 5));
+                if(checkiinOrBinArray.indexOf(this._a5)!=-1){
                     return 'iin';
                 }
                 else return 'bin';
@@ -79,15 +80,41 @@ export default class IinBin{
         }
     }
 
+    get data(){
+        let result = {
+            value: this.value,
+            type:this.type
+        }
+        if(this.type ==='IIN'){
+            result.gender = this.methods.gender();
+            result.birthCentury = this.methods.birthCentury();
+            result.registrationNumber = this.methods.registrationNumber();
+            result.birthDay = this.methods.birthDay();
+            result.birthMonth = this.methods.birthMonth();
+            result.birthYear = this.methods.birthYear();
+            result.birthDate = this.methods.birthDate();
+            return result
+        }
+        else{
+            result.regMonth = this.methods.regMonth();
+            result.regYear = this.methods.regYear();
+            result.legalEntityType = this.methods.legalEntityType();
+            result.legalEntityAttribute = this.methods.legalEntityAttribute();
+            return result
+        }
+    }
+
     get methods(){
         if(this.type ==='IIN'){
             return{
+                //пол
                 gender:()=>{
                     let gender = this._a7%2;
                     if(gender == 1) 
                          return 'male';
                     else return 'female';
                 },
+                //век рождения
                 birthCentury:()=>{
                     switch (this._a7) {
                         case 1:
@@ -101,22 +128,28 @@ export default class IinBin{
                             break;
                     }
                 },
+                //номер регистрации
                 registrationNumber:()=> {
-                    return parseInt(this._value.substring(7, 10));
+                    return this._value.substring(7, 10);
                 },
+                //день рождения
                 birthDay:()=> {
                     return this._value.substring(4, 6);
                 },
+                //год рождения
                 birthYear:()=> {
                     let century = this.methods.birthCentury();
                     return parseInt(century-1) * 100 + parseInt(this._value.substring(0, 2));
                 },
+                //месяц рождения
                 birthMonth:()=> {
                     return parseInt(this._value.substring(2, 4));
                 },
+                //дата рождения
                 birthDate:()=> {
                     return new Date(this.methods.birthYear(), this.methods.birthMonth() - 1, this.methods.birthDay());
                 },
+                //дата рождения(локализация, опции)
                 birthDateLocale:(locale, options)=> {
                     let date = this.methods.birthDate();
                     let formatter = new Intl.DateTimeFormat(locale,options);
@@ -126,7 +159,47 @@ export default class IinBin{
 
         }else if(this.type ==='BIN'){
             return{
-                
+                //месяц регистрации
+                regMonth:()=> {
+                    return parseInt(this._value.substring(2, 4));
+                },
+                //год регистрации
+                regYear:()=>{
+                    return parseInt(this._value.substring(0, 2));
+                },
+                //Тип юридического лица
+                legalEntityType:()=>{
+                    switch (this._a5) {
+                        case 4:
+                        return 'resident';//для юридических лиц-резидентов
+                            break;
+                        case 5: return 'non-resident';//для юридических лиц-нерезидентов
+                            break;
+                        case 6: return 'individual-entrepreneurs';//для индивидуальных предпринимателей, осуществляющих деятельность на основе совместного предпринимательства
+                            break;
+                        case 7:
+                        case 8:
+                        case 9: return 'reserved';//резервные значения
+                            break;
+                    }
+                },
+                //детализация юридического лица
+                legalEntityAttribute:()=>{
+                let a6 = parseInt(this._value.substring(5, 6));
+                switch (a6) {
+                        case 0:
+                        return 'head-office';//признак головного подразделения ЮЛ или ИП(С);
+                            break;
+                        case 1: return 'branch-office';//признак филиала ЮЛ или ИП(С);
+                            break;
+                        case 2: return 'representative-office';//признак представительства ЮЛ или ИП(С);
+                            break;
+                        case 3:return 'another-isolated-structural-unit';//признак иного обособленного структурного подразделения ЮЛ или ИП(С);
+                            break;
+                        case 4: return 'peasant-farming';//признак крестьянского (фермерского) хозяйства, осуществляющего деятельность на основе совместного предпринимательства;
+                            break;
+                    }
+                }
             }
 
         }
