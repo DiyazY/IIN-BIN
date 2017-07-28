@@ -10,8 +10,9 @@ export default class IinBin{
     constructor(){
         this._value = null;
         this._type = null;
-        this._a7 = null;
-        this._a5 = null;
+        this._seventhNumber = null;
+        this._fifthNumber = null;
+        this._array = [];
         this._isEmpty = (val)=>{
             if(val == null || val === undefined || val ===''){
                 return true;
@@ -45,34 +46,32 @@ export default class IinBin{
                 throw new Error('Value should include only numbers!');
             }
             //check control number
-            let b1 = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ];
-            let b2 = [ 3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2 ];
-            let a = [];
+            let firstControlSet = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ];
+            let secondControlSet = [ 3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2 ];
             let controll = 0;
-            for(let i=0; i<12; i++){
-                a[i] = parseInt(newValue.substring(i, i+1));
-                if(i<11) controll += a[i]*b1[i];
-            }
+            this._array = Array.from(newValue).map((el,i)=>{
+                if(i<11) controll += el*firstControlSet[i];
+                return parseInt(el)
+            })
             controll = controll % 11;
             if(controll==10) {
                 controll = 0;
-                for(let i=0; i<11; i++)
-                    controll += a[i]*b2[i];
+                this._array.map((el,i)=>controll += el*secondControlSet[i])
                 controll = controll % 11;
             }
-            if (controll != a[11]) {
+            if (controll != this._array[11]) {
                 throw new Error('Invalid control number!');
             }
             this._type =(()=>{
                 let checkiinOrBinArray =[0,1,2,3];
-                this._a5 = parseInt(newValue.substring(4, 5));
-                if(checkiinOrBinArray.indexOf(this._a5)!=-1){
+                this._fifthNumber = this._array[4]
+                if(checkiinOrBinArray.indexOf(this._fifthNumber)!=-1){
                     return 'iin';
                 }
                 else return 'bin';
             })();
             this._value = newValue;
-            this._a7 = parseInt(newValue.substring(6, 7));
+            this._seventhNumber = this._array[6]
             console.info(`${this._value} is ${this._type}`);
         }
         catch(exception){
@@ -109,14 +108,14 @@ export default class IinBin{
             return{
                 //пол
                 gender:()=>{
-                    let gender = this._a7%2;
+                    let gender = this._seventhNumber%2;
                     if(gender == 1) 
                          return 'male';
                     else return 'female';
                 },
                 //век рождения
                 birthCentury:()=>{
-                    switch (this._a7) {
+                    switch (this._seventhNumber) {
                         case 1:
                         case 2: return '19';
                             break;
@@ -169,7 +168,7 @@ export default class IinBin{
                 },
                 //Тип юридического лица
                 legalEntityType:()=>{
-                    switch (this._a5) {
+                    switch (this._fifthNumber) {
                         case 4:
                         return 'resident';//для юридических лиц-резидентов
                             break;
@@ -185,8 +184,8 @@ export default class IinBin{
                 },
                 //детализация юридического лица
                 legalEntityAttribute:()=>{
-                let a6 = parseInt(this._value.substring(5, 6));
-                switch (a6) {
+                let sixthNumber = parseInt(this._array[5]);
+                switch (sixthNumber) {
                         case 0:
                         return 'head-office';//признак головного подразделения ЮЛ или ИП(С);
                             break;
