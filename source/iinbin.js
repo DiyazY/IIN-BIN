@@ -80,26 +80,31 @@ export default class IinBin{
     }
 
     get data(){
-        let result = {
+        const result = {
             value: this.value,
             type:this.type
         }
+        const methods = this.methods;
         if(this.type ==='IIN'){
-            result.gender = this.methods.gender();
-            result.birthCentury = this.methods.birthCentury();
-            result.registrationNumber = this.methods.registrationNumber();
-            result.birthDay = this.methods.birthDay();
-            result.birthMonth = this.methods.birthMonth();
-            result.birthYear = this.methods.birthYear();
-            result.birthDate = this.methods.birthDate();
-            return result
+            return {
+                ...result,
+                gender:methods.gender(),
+                birthCentury:methods.birthCentury(),
+                registrationNumber:methods.registrationNumber(),
+                birthDay:methods.birthDay(),
+                birthMonth:methods.birthMonth(),
+                birthYear:methods.birthYear(),
+                birthDate:methods.birthDate()
+            }
         }
         else{
-            result.regMonth = this.methods.regMonth();
-            result.regYear = this.methods.regYear();
-            result.legalEntityType = this.methods.legalEntityType();
-            result.legalEntityAttribute = this.methods.legalEntityAttribute();
-            return result
+            return {
+                ...result,
+                regMonth : methods.regMonth(),
+                regYear : methods.regYear(),
+                legalEntityType : methods.legalEntityType(),
+                legalEntityAttribute : methods.legalEntityAttribute()
+            }
         }
     }
 
