@@ -7,6 +7,6 @@
 ## Build It Yourself/Run the Demos
 Build: `npm install && npm build`
 
-Demos: `npm install && npm start && open http://localhost:3000`
+Demos: `npm install && npm start`
 ## License
 [DYinc](http://dyinc.kz).
