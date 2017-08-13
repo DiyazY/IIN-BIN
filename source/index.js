@@ -40,6 +40,7 @@ document.getElementById('results').onclick=()=>{
         console.info(`legalEntityAttribute: ${iinbin.methods.legalEntityAttribute()}`);
         console.dir(iinbin.data);
     }
+    document.getElementById('result').innerHTML= JSON.stringify(iinbin.data, undefined, 2);
 
 }
 console.dir(iinbin.methods);
