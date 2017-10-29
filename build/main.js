@@ -80,7 +80,7 @@ var iinbin = new _iinbin2.default();
 iinbin.type;
 iinbin.value;
 iinbin.methods;
-iinbin.value = document.getElementById('iin').value = '901123300258'; //this is my valid iin
+iinbin.value = document.getElementById('iin').value = '901123300254'; //this is invalid iin
 
 console.log(iinbin.type);
 

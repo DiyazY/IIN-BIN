@@ -8,17 +8,14 @@ export const options = {
 export default class IinBin{
 
     constructor(){
-        this._value = null;
-        this._type = null;
-        this._seventhNumber = null;
+        this._value , 
+        this._type, 
+        this._seventhNumber,
+        this._seventhNumber,
         this._fifthNumber = null;
+
         this._array = [];
-        this._isEmpty = (val)=>{
-            if(val == null || val === undefined || val ===''){
-                return true;
-            }
-            return false;
-        };
+        this._isEmpty = (val)=> !(val || false);
     }
 
     get type(){
@@ -39,12 +36,10 @@ export default class IinBin{
 
     set value(newValue){
         try{
-            if (newValue.length != 12) {
+            if (newValue.length !== 12) 
                 throw new Error('Length should be 12 symbols!');
-            }
-            if (!(/[0-9]{12}/.test(newValue))) {
+            if (!(/[0-9]{12}/.test(newValue)))
                 throw new Error('Value should include only numbers!');
-            }
             //check control number
             let firstControlSet = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ];
             let secondControlSet = [ 3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2 ];
@@ -54,22 +49,19 @@ export default class IinBin{
                 return parseInt(el)
             })
             controll = controll % 11;
-            if(controll==10) {
+            if(controll===10) {
                 controll = 0;
                 this._array.map((el,i)=>controll += el*secondControlSet[i])
                 controll = controll % 11;
             }
-            if (controll != this._array[11]) {
+            if (controll !== this._array[11]) {
                 throw new Error('Invalid control number!');
             }
             this._type =(()=>{
-                let checkiinOrBinArray =[0,1,2,3];
-                this._fifthNumber = this._array[4]
-                if(checkiinOrBinArray.indexOf(this._fifthNumber)!=-1){
-                    return 'iin';
-                }
-                else return 'bin';
-            })();
+                    let checkiinOrBinArray =[0,1,2,3];
+                    this._fifthNumber = this._array[4]
+                    return checkiinOrBinArray.indexOf(this._fifthNumber)!==-1?'iin':'bin';
+                })();
             this._value = newValue;
             this._seventhNumber = this._array[6]
             console.info(`${this._value} is ${this._type}`);
@@ -97,7 +89,7 @@ export default class IinBin{
                 birthDate:methods.birthDate()
             }
         }
-        else{
+        else if(this.type ==='BIN'){
             return {
                 ...result,
                 regMonth : methods.regMonth(),
@@ -112,12 +104,7 @@ export default class IinBin{
         if(this.type ==='IIN'){
             return{
                 //пол
-                gender:()=>{
-                    let gender = this._seventhNumber%2;
-                    if(gender == 1) 
-                         return 'male';
-                    else return 'female';
-                },
+                gender:()=> this._seventhNumber%2 == 1 ?'male':'female',
                 //век рождения
                 birthCentury:()=>{
                     switch (this._seventhNumber) {
@@ -133,26 +120,18 @@ export default class IinBin{
                     }
                 },
                 //номер регистрации
-                registrationNumber:()=> {
-                    return this._value.substring(7, 10);
-                },
+                registrationNumber:()=> this._value.substring(7, 10),
                 //день рождения
-                birthDay:()=> {
-                    return this._value.substring(4, 6);
-                },
+                birthDay:()=> this._value.substring(4, 6),
                 //год рождения
                 birthYear:()=> {
                     let century = this.methods.birthCentury();
                     return parseInt(century-1) * 100 + parseInt(this._value.substring(0, 2));
                 },
                 //месяц рождения
-                birthMonth:()=> {
-                    return parseInt(this._value.substring(2, 4));
-                },
+                birthMonth:()=> parseInt(this._value.substring(2, 4)),
                 //дата рождения
-                birthDate:()=> {
-                    return new Date(this.methods.birthYear(), this.methods.birthMonth() - 1, this.methods.birthDay());
-                },
+                birthDate:()=> new Date(Date.UTC(this.methods.birthYear(), this.methods.birthMonth() - 1, this.methods.birthDay())),
                 //дата рождения(локализация, опции)
                 birthDateLocale:(locale, options)=> {
                     let date = this.methods.birthDate();
@@ -161,16 +140,13 @@ export default class IinBin{
                 }
             }
 
-        }else if(this.type ==='BIN'){
+        } 
+        else if(this.type ==='BIN'){
             return{
                 //месяц регистрации
-                regMonth:()=> {
-                    return parseInt(this._value.substring(2, 4));
-                },
+                regMonth:()=> parseInt(this._value.substring(2, 4)),
                 //год регистрации
-                regYear:()=>{
-                    return parseInt(this._value.substring(0, 2));
-                },
+                regYear:()=> parseInt(this._value.substring(0, 2)),
                 //Тип юридического лица
                 legalEntityType:()=>{
                     switch (this._fifthNumber) {
@@ -189,23 +165,22 @@ export default class IinBin{
                 },
                 //детализация юридического лица
                 legalEntityAttribute:()=>{
-                let sixthNumber = parseInt(this._array[5]);
-                switch (sixthNumber) {
-                        case 0:
-                        return 'head-office';//признак головного подразделения ЮЛ или ИП(С);
-                            break;
-                        case 1: return 'branch-office';//признак филиала ЮЛ или ИП(С);
-                            break;
-                        case 2: return 'representative-office';//признак представительства ЮЛ или ИП(С);
-                            break;
-                        case 3:return 'another-isolated-structural-unit';//признак иного обособленного структурного подразделения ЮЛ или ИП(С);
-                            break;
-                        case 4: return 'peasant-farming';//признак крестьянского (фермерского) хозяйства, осуществляющего деятельность на основе совместного предпринимательства;
-                            break;
-                    }
+                    let sixthNumber = parseInt(this._array[5]);
+                    switch (sixthNumber) {
+                            case 0:
+                            return 'head-office';//признак головного подразделения ЮЛ или ИП(С);
+                                break;
+                            case 1: return 'branch-office';//признак филиала ЮЛ или ИП(С);
+                                break;
+                            case 2: return 'representative-office';//признак представительства ЮЛ или ИП(С);
+                                break;
+                            case 3:return 'another-isolated-structural-unit';//признак иного обособленного структурного подразделения ЮЛ или ИП(С);
+                                break;
+                            case 4: return 'peasant-farming';//признак крестьянского (фермерского) хозяйства, осуществляющего деятельность на основе совместного предпринимательства;
+                                break;
+                        }
                 }
             }
-
         }
     }
 }
