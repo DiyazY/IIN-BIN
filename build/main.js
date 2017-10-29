@@ -153,16 +153,11 @@ var IinBin = function () {
     function IinBin() {
         _classCallCheck(this, IinBin);
 
-        this._value = null;
-        this._type = null;
-        this._seventhNumber = null;
-        this._fifthNumber = null;
+        this._value, this._type, this._seventhNumber, this._seventhNumber, this._fifthNumber = null;
+
         this._array = [];
         this._isEmpty = function (val) {
-            if (val == null || val === undefined || val === '') {
-                return true;
-            }
-            return false;
+            return !(val || false);
         };
     }
 
@@ -188,12 +183,8 @@ var IinBin = function () {
             var _this = this;
 
             try {
-                if (newValue.length != 12) {
-                    throw new Error('Length should be 12 symbols!');
-                }
-                if (!/[0-9]{12}/.test(newValue)) {
-                    throw new Error('Value should include only numbers!');
-                }
+                if (newValue.length !== 12) throw new Error('Length should be 12 symbols!');
+                if (!/[0-9]{12}/.test(newValue)) throw new Error('Value should include only numbers!');
                 //check control number
                 var firstControlSet = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
                 var secondControlSet = [3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2];
@@ -203,22 +194,20 @@ var IinBin = function () {
                     return parseInt(el);
                 });
                 controll = controll % 11;
-                if (controll == 10) {
+                if (controll === 10) {
                     controll = 0;
                     this._array.map(function (el, i) {
                         return controll += el * secondControlSet[i];
                     });
                     controll = controll % 11;
                 }
-                if (controll != this._array[11]) {
+                if (controll !== this._array[11]) {
                     throw new Error('Invalid control number!');
                 }
                 this._type = function () {
                     var checkiinOrBinArray = [0, 1, 2, 3];
                     _this._fifthNumber = _this._array[4];
-                    if (checkiinOrBinArray.indexOf(_this._fifthNumber) != -1) {
-                        return 'iin';
-                    } else return 'bin';
+                    return checkiinOrBinArray.indexOf(_this._fifthNumber) !== -1 ? 'iin' : 'bin';
                 }();
                 this._value = newValue;
                 this._seventhNumber = this._array[6];
@@ -245,7 +234,7 @@ var IinBin = function () {
                     birthYear: methods.birthYear(),
                     birthDate: methods.birthDate()
                 });
-            } else {
+            } else if (this.type === 'BIN') {
                 return _extends({}, result, {
                     regMonth: methods.regMonth(),
                     regYear: methods.regYear(),
@@ -263,8 +252,7 @@ var IinBin = function () {
                 return {
                     //пол
                     gender: function gender() {
-                        var gender = _this2._seventhNumber % 2;
-                        if (gender == 1) return 'male';else return 'female';
+                        return _this2._seventhNumber % 2 == 1 ? 'male' : 'female';
                     },
                     //век рождения
                     birthCentury: function birthCentury() {
@@ -302,7 +290,7 @@ var IinBin = function () {
                     },
                     //дата рождения
                     birthDate: function birthDate() {
-                        return new Date(_this2.methods.birthYear(), _this2.methods.birthMonth() - 1, _this2.methods.birthDay());
+                        return new Date(Date.UTC(_this2.methods.birthYear(), _this2.methods.birthMonth() - 1, _this2.methods.birthDay()));
                     },
                     //дата рождения(локализация, опции)
                     birthDateLocale: function birthDateLocale(locale, options) {
