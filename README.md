@@ -19,9 +19,9 @@ import iinbinFunc,{options} from './iinbin';
 let iinbin = new iinbinFunc();
 iinbin.value = '901123300254';
 
-iinbin.type;
-iinbin.value;
-iinbin.methods;
+console.info(iinbin.type);
+console.info(iinbin.value);
+console.info(iinbin.methods);
 
 if (iinbin.type==='IIN'){
         console.info(`gender: ${iinbin.methods.gender()}`);
@@ -43,7 +43,6 @@ if (iinbin.type==='BIN'){
     console.info(`legalEntityType: ${iinbin.methods.legalEntityType()}`);
 
     console.info(`legalEntityAttribute: ${iinbin.methods.legalEntityAttribute()}`);
-    console.dir(iinbin.data);
 }
 
 console.dir(iinbin.data);
