@@ -11,7 +11,12 @@
     "type": "git",
     "url": "https://github.com/DiyazY/IIN-BIN.git"
   },
-  "keywords": [],
+  "keywords": [
+    "js",
+    "iin",
+    "bin",
+    "kazakhstan"
+  ],
   "author": "Diyaz",
   "license": "ISC",
   "bugs": {
